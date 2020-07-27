@@ -1,0 +1,23 @@
+.carousel-control-prev {
+    margin-left:8% ;
+}
+
+.carousel-control-next{
+    margin-right:10% ;
+}
+
+.slides{
+    margin-left: 130px;
+    margin-right: 100px;
+}
+
+.form-group {
+    margin-left: 50px;
+    margin-top: 20px;
+    width: 50%;
+}
+
+#heading{
+    margin-left: 130px;
+    margin-top:30px;
+}
