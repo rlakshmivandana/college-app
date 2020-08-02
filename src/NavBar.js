@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import history from './history'
+
 import {
     Collapse,
     Navbar,
@@ -19,6 +21,11 @@ const NavBar = (props) => {
 
     const toggle = () => setIsOpen(!isOpen);
 
+    const onClick = (e) => {
+        console.log("isOnline");
+        history.push("/signup");
+    };
+
     return (
         <div>
             <Navbar color="light" light expand="md">
@@ -27,16 +34,19 @@ const NavBar = (props) => {
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="mr-auto" navbar>
                         <NavItem>
-                            <NavLink href="">Home</NavLink>
+                            <NavLink href="/home">Home</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink href="">About</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="">Administration</NavLink>
+                            <NavLink href="" >Administration</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink href="">Placement</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink  onClick={onClick}>Register</NavLink>
                         </NavItem>
                         <UncontrolledDropdown nav inNavbar>
                             <DropdownToggle nav caret>
@@ -108,7 +118,7 @@ const NavBar = (props) => {
                         </NavItem>
 
                         <NavItem>
-                            <NavLink href="">Login</NavLink>
+                            <NavLink href="/login">Login</NavLink>
                         </NavItem>
                     </Nav>
 
