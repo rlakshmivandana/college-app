@@ -7,6 +7,8 @@ export default class RegistrationForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            firstName: "",
+            lastName: "",
             email: "",
             password: "",
             formError: false,
@@ -14,29 +16,23 @@ export default class RegistrationForm extends Component {
             passwordError: '',
             firstNameError: '',
             lastNameError: '',
-            formErrorArray:[],
-            success:''
+            formErrorArray: [],
+            success: ''
         }
     }
 
     onChangeHandler = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        this.setState({[name]: value}, () => this.validateForm(name, value))
+        this.setState({[name]: value}, () => {
+            this.isValid()
+        })
     };
 
     onSubmit = () => {
-        var $this =this;
-        const {email, password, firstName, lastName, formError,success,formErrorArray} = this.state;
-        var validation = {email:this.state.email,password:this.state.password,firstName:this.state.firstName,lastName:this.state.lastName};
-        var i;
-        for (i in validation) {
-            this.validateForm(i,validation[i]);
-        }
-
-
-        console.log(this.state.emailError, this.state.passwordError, this.state.firstNameError, this.state.lastNameError);
-        if (!formErrorArray) {
+        var $this = this;
+        const {email, password, firstName, lastName} = this.state;
+        if (this.isValid()) {
             axios.post("http://localhost:8080/employee/save", {
                 email: email,
                 password: password,
@@ -44,93 +40,72 @@ export default class RegistrationForm extends Component {
                 lastName: lastName
             }).then(function (response) {
                 console.log(response);
-                $this.setState({success:'saved successfully'})
+                $this.setState({success: 'saved successfully'})
             })
         }
 
     };
-    isValidForm = () => {
 
-        const {emailError, passwordError, firstNameError, lastNameError,formErrorArray} = this.state;
-
-        //     if (emailError || passwordError || firstNameError || lastNameError) {
-          if (formErrorArray) {
-              this.setState({formError: true})
-           } else
-               this.setState({formError: false})
-        alert(this.state.formError);
-
-    };
-    validateForm = (name, value) => {
-        let {emailError, passwordError, firstNameError, lastNameError, formErrorArray} = this.state;
+    isValid = () => {
+        let {firstName, lastName, password, email, emailError, passwordError, firstNameError, lastNameError} = this.state;
+        let formErrorArray = [];
         const validEmailRegex =
             RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
-        switch (name) {
-            case 'lastName':
-                if (value === undefined || value === null ) {
-                   lastNameError = "Last Name is required field";
-                }else if(value.length < 4){
-                    lastNameError = "Last Name is invalid.Please try with Name greater than 3 characters";
-                }else
-                    lastNameError = "";
-              //  this.setState({lastNameError: lastNameError});
-                 formErrorArray.push(lastNameError)
-                break;
-            case 'firstName':
-                if (value === undefined || value === null ) {
-                    firstNameError = "First Name is required field";
-                }else if(value.length < 4){
-                    firstNameError = "First Name is invalid.Please try with Name greater than 3 characters";
-                }else
-                    firstNameError = "";
-               // this.setState({firstNameError: firstNameError});
-                formErrorArray.push(firstNameError)
+        if (lastName === undefined || lastName === null) {
+            lastNameError = "Last Name is required field";
+            formErrorArray.push(lastNameError);
 
-                break;
-            case 'email':
-                if (validEmailRegex.test(value)) {
-                    emailError = "";
-                } else {
-                    emailError = "Email Id is invalid.Please try with valid email id";
-                }
-               // this.setState({emailError: emailError});
-                formErrorArray.push(emailError)
+        } else if (lastName.length < 4) {
+            lastNameError = "Last Name is invalid.Please try with Name greater than 3 characters";
+            formErrorArray.push(lastNameError);
 
-                break;
-            case 'password':
-                if (value.length < 5) {
-                    passwordError = "Please enter Strong password. At least 6 char should be there";
-                } else {
-                    passwordError = "";
-                }
-              //  this.setState({passwordError: passwordError});
-                formErrorArray.push(passwordError);
-                break;
+        } else
+            lastNameError = "";
+
+        if (firstName === undefined || firstName === null) {
+            firstNameError = "First Name is required field";
+            formErrorArray.push(firstNameError);
+
+        } else if (firstName.length < 4) {
+            firstNameError = "First Name is invalid.Please try with Name greater than 3 characters";
+            formErrorArray.push(firstNameError);
+
+        } else
+            firstNameError = "";
+
+        if (validEmailRegex.test(email)) {
+            emailError = "";
+        } else {
+            emailError = "Email Id is invalid.Please try with valid email id";
+            formErrorArray.push(emailError);
+
         }
 
-      //  this.isValidForm();
-        this.setState({formErrorArray:formErrorArray});
-       /* this.setState({
-            emailError: emailError,
-            passwordError: passwordError,
-            firstNameError: firstNameError,
-            lastNameError: lastNameError
-        }, () => this.isValidForm())*/
+        if (password.length < 5) {
+            passwordError = "Please enter Strong password. At least 6 char should be there";
+            formErrorArray.push(passwordError);
 
-    }
+        } else {
+            passwordError = "";
+        }
+        this.setState({firstNameError, lastNameError, passwordError, emailError});
+        console.log(formErrorArray);
+        if (formErrorArray.length < 1) {
+            return true;
+        } else
+            return false;
+    };
 
     render() {
         return (
             <React.Fragment>
                 <h2 id={"heading"}>Student Registration Form</h2>
                 <Form>
-
                     {
-                        this.state.formErrorArray &&
-                        this.state.formErrorArray.map(error => (
-                            <div className={"text-red"}>{error}</div>
-                            ))
+                        this.state.success &&
+                        <Label className={"text-red"}>{this.state.success}</Label>
                     }
+
                     <FormGroup>
                         <Label for="exampleFirstName">FirstName</Label>
                         <Input type="text" name="firstName" id="exampleFirstName" onChange={this.onChangeHandler}

@@ -13,7 +13,6 @@ const Login = (props) => {
 
     return (
         <div>
-            {/*<Button color="danger" onClick={toggle}>Login</Button>*/}
             <Modal isOpen={modal} toggle={toggle} className={className}>
                 <ModalHeader toggle={toggle}>Login form</ModalHeader>
                 <ModalBody>
@@ -26,9 +25,7 @@ const Login = (props) => {
                         <Label for="examplePassword">Password</Label>
                         <Input type="password" name="password" id="examplePassword"
                                placeholder="password placeholder"/>
-
                     </FormGroup>
-
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={toggle}>Login</Button>{' '}

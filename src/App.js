@@ -8,6 +8,10 @@ import Login from "./Login";
 import RegistrationForm from "./RegistrationForm";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import history from './history'
+import SearchForm from './SearchForm'
+import EditStudent from "./EditStudent";
+import DeleteStudent from "./DeleteStudent";
+
 
 class App extends React.Component {
     render() {
@@ -19,7 +23,7 @@ class App extends React.Component {
                      <Route
                          exact
                          path="/home">
-                         < Home/>
+                         <Home/>
                      </Route>
                      <Route
                          exact
@@ -29,7 +33,12 @@ class App extends React.Component {
                      <Route
                          exact
                          path="/login">
-                         <Login modal={true}/>
+                         <Login modal={true} />
+                     </Route>
+                     <Route
+                         exact
+                         path="/admin">
+                         <SearchForm />
                      </Route>
                      <Route
                          exact
