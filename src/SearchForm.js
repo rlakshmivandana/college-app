@@ -8,10 +8,11 @@ import StudentComponent from "./StudentComponent";
 const SearchForm  = (props) => {
     const[students, setStudents] = useState([]);
     const[id, setId] = useState("");
+    const[student, setStudent] = useState();
 
-    const[modal, setModal] = useState("true");
+    const[modal, setModal] = useState(false);
 
-   const onSubmit = (e,id) => {
+ /*  const onSubmit = (e,id) => {
         axios.get('http://localhost:8080/employee/get/'+id)
             .then(
                 (response) => {
@@ -19,8 +20,8 @@ const SearchForm  = (props) => {
                     setStudents(response.data.data);
                 }
             )
-    }
-   /* const onSubmit = (e,id) => {
+    }*/
+    const onSubmit = (e,id) => {
 
         axios.get('http://localhost:8080/employee/get/all')
             .then(
@@ -29,7 +30,7 @@ const SearchForm  = (props) => {
                     setStudents(response.data.data);
                 }
             )
-    }*/
+    }
 
     const students1 =  students.map(student => {
         return <tr>
@@ -38,7 +39,12 @@ const SearchForm  = (props) => {
             <td>{student.lastName}</td>
             <td>{student.email}</td>
             <td>{student.password}</td>
-            <td> <Button onClick={e =>EditStudent(e,student,{modal})} ><a></a></Button> <Button onClick={e => DeleteStudent(e,student)} >Delete</Button></td>
+            <td> <Button onClick={e => {
+                alert("button")
+                alert(!modal)
+                setModal(!modal);
+                setStudent(student);
+            }} >edit</Button></td>
         </tr>
     });
 
@@ -74,6 +80,7 @@ const SearchForm  = (props) => {
                 {students1}
                 </tbody>
             </Table>
+            <EditStudent student={student} modal={modal}/>
         </React.Fragment>
 
     );

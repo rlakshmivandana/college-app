@@ -20,13 +20,13 @@ const EditStudent = (props) => {
 
     return (
             <React.Fragment>
-            <Modal isOpen={modal} toggle={toggle} className={className}>
+            <Modal isOpen={props.modal} toggle={toggle} className={className}>
                 <ModalHeader toggle={toggle}>Edit Student </ModalHeader>
                 <ModalBody>
                             <FormGroup>
                                 <Label for="exampleFirstName">FirstName</Label>
                                 <Input type="text" name="firstName" id="exampleFirstName" onChange={onChangeHandler}
-                                       placeholder="with a placeholder"/>
+                                       placeholder="with a placeholder" value={props.student? props.student.firstName:""}/>
                             </FormGroup>
 
                             <FormGroup>
