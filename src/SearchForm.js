@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Button, Form, FormGroup, Input, Label, ModalBody, Table} from "reactstrap";
 import EditStudent from "./EditStudent";
@@ -12,16 +12,24 @@ const SearchForm  = (props) => {
 
     const[modal, setModal] = useState(false);
 
- /*  const onSubmit = (e,id) => {
-        axios.get('http://localhost:8080/employee/get/'+id)
+    const onChangeHandler = (e) => {
+        setId(e.target.value);
+    }
+
+    const onSubmit = (e) => {
+        axios.get('http://localhost:8080/employee/get/search',
+            {
+                params: {
+                    id: id
+                }
+         })
             .then(
                 (response) => {
-                    alert(response.data.data.firstName)
                     setStudents(response.data.data);
                 }
             )
-    }*/
-    const onSubmit = (e,id) => {
+    }
+/*    const onSubmit = (e,id) => {
 
         axios.get('http://localhost:8080/employee/get/all')
             .then(
@@ -30,6 +38,9 @@ const SearchForm  = (props) => {
                     setStudents(response.data.data);
                 }
             )
+    }*/
+    const handleClose = () => {
+        setModal(false);
     }
 
     const students1 =  students.map(student => {
@@ -40,11 +51,12 @@ const SearchForm  = (props) => {
             <td>{student.email}</td>
             <td>{student.password}</td>
             <td> <Button onClick={e => {
-                alert("button")
-                alert(!modal)
-                setModal(!modal);
+                setModal(true);
                 setStudent(student);
-            }} >edit</Button></td>
+
+            }} >
+                edit
+            </Button></td>
         </tr>
     });
 
@@ -59,10 +71,10 @@ const SearchForm  = (props) => {
                 <FormGroup>
                     <Label for="exampleId">StudentId</Label>
                     <Input type="id" name={"id"} id="exampleId"
-                           placeholder="with a placeholder"/>
+                           placeholder="with a placeholder"  onChange={onChangeHandler}/>
                 </FormGroup>
                 <FormGroup>
-                    <Button onClick={e => onSubmit(e,"1")} >Submit</Button>
+                    <Button onClick={e => onSubmit(e)} >Submit</Button>
                 </FormGroup>
             </div>
             <Table>
@@ -80,7 +92,7 @@ const SearchForm  = (props) => {
                 {students1}
                 </tbody>
             </Table>
-            <EditStudent student={student} modal={modal}/>
+            <EditStudent student={student} handleClose= {handleClose} modal={modal}/>
         </React.Fragment>
 
     );
